@@ -65,7 +65,7 @@ class LeggedRobot(BaseTask):
         self.cfg = cfg
         self.sim_params = sim_params
         self.height_samples = None
-        self.debug_viz = False
+        self.debug_viz = True
         self.init_done = False
         self._parse_cfg(self.cfg)
         super().__init__(self.cfg, sim_params, physics_engine, sim_device, headless)
@@ -155,12 +155,22 @@ class LeggedRobot(BaseTask):
         if len(env_ids) == 0:
             return
         # update curriculum
+  
         if self.cfg.terrain.curriculum:
             self._update_terrain_curriculum(env_ids)
         # avoid updating command curriculum at each step since the maximum command is common to all envs
+
         if self.cfg.commands.curriculum and (self.common_step_counter % self.max_episode_length==0):
             self.update_command_curriculum(env_ids)
+    
+    
+        # print(f"terrain",self.cfg.terrain.curriculum) true
+        # print(f"command",self.cfg.commands.curriculum) true 
         
+        # print(f"common_step_counter: ",self.common_step_counter) 77
+        # print(f"max_episode_length: ",self.max_episode_length) 1001
+        
+                    
         # reset robot states
         self._reset_dofs(env_ids)
         self._reset_root_states(env_ids)
@@ -809,7 +819,7 @@ class LeggedRobot(BaseTask):
         heights3 = self.height_samples[px, py+1]
         heights = torch.min(heights1, heights2)
         heights = torch.min(heights, heights3)
-
+        #print(heights)
         return heights.view(self.num_envs, -1) * self.terrain.cfg.vertical_scale
 
     #------------ reward functions----------------
