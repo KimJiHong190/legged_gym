@@ -57,7 +57,7 @@ class BaseTask():
         if self.headless == True:
             self.graphics_device_id = -1
 
-        self.num_envs = cfg.env.num_envs
+        self.num_envs = 1
         self.num_obs = cfg.env.num_observations
         self.num_privileged_obs = cfg.env.num_privileged_obs
         self.num_actions = cfg.env.num_actions
@@ -86,7 +86,7 @@ class BaseTask():
 
         # todo: read from config
         self.enable_viewer_sync = True
-        self.viewer = None
+        self.viewer = True
 
         # if running with a viewer, set up keyboard shortcuts and camera
         if self.headless == False:
